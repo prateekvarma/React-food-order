@@ -24,7 +24,7 @@ const cartReducer = (state, action) => {
       updatedItems[exisitingCartItemIndex] = updatedItem; //override the existing item with the newly added properties
     } else {
       //it's a new item that is not yet present in the cart
-      updatedItems = state.items.concat(action.item); //{ ...state.item, ...action.item }
+      updatedItems = state.items.concat(action.item);
     }
 
     const updatedTotalAmount =
@@ -35,6 +35,30 @@ const cartReducer = (state, action) => {
       totalAmount: updatedTotalAmount,
     };
   }
+
+  if (action.type === "REMOVE") {
+    const existingCartItemIndex = state.items.findIndex(
+      (item) => item.id === action.id
+    );
+    const existingItem = state.items[existingCartItemIndex];
+    const updatedTotalAmount = state.totalAmount - existingItem.price;
+
+    let updatedItems;
+    if (existingItem.amount === 1) {
+      //means this is the last amount for this item, so remove the entire item from array
+      updatedItems = state.items.filter((item) => item.id !== action.id);
+    } else {
+      //keep the item in the array, but decrease amount by 1
+      const updatedItem = { ...existingItem, amount: existingItem.amount - 1 };
+      updatedItems = [...state.items];
+      updatedItems[existingCartItemIndex] = updatedItem; //override item with newly created one with new props
+    }
+    return {
+      items: updatedItems,
+      totalAmount: updatedTotalAmount,
+    };
+  }
+
   return defaultCartState;
 };
 
@@ -48,7 +72,9 @@ const CartProvider = (props) => {
     dispatchCartAction({ type: "ADD", item: item });
   };
 
-  const removeItemFromCartHandler = (id) => {};
+  const removeItemFromCartHandler = (id) => {
+    dispatchCartAction({ type: "REMOVE", id: id });
+  };
 
   const cartContextData = {
     //This data object will be dynamic
