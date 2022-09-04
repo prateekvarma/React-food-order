@@ -12,7 +12,7 @@ const Cart = (props) => {
   const hasItems = cartCtx.items.length > 0;
 
   const cartItemAddHandler = (item) => {
-
+    cartCtx.addItem({ ...item, amount: 1 }); //passing just 'item' is doubling up the no. of items
   }
 
   const cartItemRemoveHandler = (id) => {
