@@ -6,10 +6,12 @@ import classes from './AvailableMeals.module.css';
 
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
     const fetchMeals = async () => {
-      const response = await fetch("https://XXFirebaseUrlXX/meals.json");
+      setIsLoading(true);
+      const response = await fetch("XXX/meals.json");
       const responseData = await response.json();
 
       const loadedMeals = [];
@@ -22,9 +24,18 @@ const AvailableMeals = () => {
         })
       }
       setMeals(loadedMeals);
+      setIsLoading(false);
     }
     fetchMeals();
   }, []);
+
+  if(isLoading) {
+    return (
+      <section className={classes.MealsLoading}>
+        <p>...Loading</p>
+      </section>
+    )
+  }
 
   const mealsList = meals.map((meal) => (
     <MealItem
