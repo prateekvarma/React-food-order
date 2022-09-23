@@ -1,4 +1,4 @@
-const Checkout = () => {
+const Checkout = (props) => {
     return (
         <form>
             <div>
@@ -17,6 +17,7 @@ const Checkout = () => {
                 <label htmlFor="city">City</label>
                 <input id="city" type="text" />
             </div>
+            <button type="button" onClick={props.onCancel}>Cancel</button>
             <button>Confirm</button>
         </form>
     )    
