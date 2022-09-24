@@ -10,7 +10,7 @@ const Checkout = (props) => {
         name: true, //initial values for each sub state
         street: true,
         city: true,
-        postalcode: true,
+        postalCode: true,
     });
 
     const nameInputRef = useRef();
@@ -45,13 +45,20 @@ const Checkout = (props) => {
 
         if(!formIsValid) {
             return;
-
         }
+
+        //everything is valid, pass data to the parent component as a prop function
+        props.onConfirm({
+            name: enteredName,
+            street: enteredStreet,
+            city: enteredCity,
+            postalCode: enteredPostalCode
+        });
     };
 
     const nameClasses = `${classes.control} ${formInputValidity.name ? "" : classes.invalid}`;
     const streetClasses = `${classes.control} ${formInputValidity.street ? "" : classes.invalid}`;
-    const postalCodeClasses = `${classes.control} ${formInputValidity.postalcode ? "" : classes.invalid}`;
+    const postalCodeClasses = `${classes.control} ${formInputValidity.postalCode ? "" : classes.invalid}`;
     const cityClasses = `${classes.control} ${formInputValidity.city ? "" : classes.invalid}`;
 
 
@@ -70,7 +77,7 @@ const Checkout = (props) => {
             <div className={postalCodeClasses}>
                 <label htmlFor="postal">Postal Code</label>
                 <input ref={postalCodeInputRef} id="postal" type="text" />
-                {!formInputValidity.postalcode && <p>Please enter a valid postal code (5 chars long)</p>}
+                {!formInputValidity.postalCode && <p>Please enter a valid postal code (5 chars long)</p>}
             </div>
             <div className={cityClasses}>
                 <label htmlFor="city">City</label>
